@@ -15,6 +15,8 @@ class speech_to_text():
     def __init__(self):
        self.recognizer = sr.Recognizer()
        self.microphone = sr.Microphone()
+       self.engine = pyttsx3.init();
+
     def recognize_speech_from_mic(self):
         print("Start...")
         with self.microphone as source:
@@ -37,7 +39,8 @@ class speech_to_text():
         if(response["transcription"]=="None"):
             print("Speech not detected! Pls try again!")
         return response["transcription"]
-    def cleen(self, text):
+
+    def clean(self, text):
         lem = WordNetLemmatizer()
         stem = PorterStemmer()
         stop_words = set(stopwords.words("english"))
@@ -52,16 +55,9 @@ class speech_to_text():
                                                             stop_words]
         text = " ".join(text)
         return text
-    def text_speech(self, cleened_text):
-        engine = pyttsx3.init();
-        engine.say(cleened_text);
-        engine.runAndWait();
 
-response = speech_to_text()
-text = response.recognize_speech_from_mic()
-print(text)
-cleened_text = response.cleen(text)
-print(cleened_text)
-response.text_speech(cleened_text)
+    def text_speech(self, cleaned_text):
+        self.engine.say(cleaned_text);
+        self.engine.runAndWait();
 
 

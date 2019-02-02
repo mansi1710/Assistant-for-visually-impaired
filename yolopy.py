@@ -99,11 +99,9 @@ class yolo:
     def detectAndPrint(self, frame, args):
         idxs, boxes, classIDs, confidences = self.detectYolo(frame, args)
         lbl = []
-        print(len(classIDs), len(confidences))
-        print(confidences)
-        print(classIDs)
+
         if len(idxs)>0:
             for i,num in enumerate(classIDs):
-                text = "{}: {:.4f}".format(self.LABELS[num], confidences[i])
+                text = "{}".format(self.LABELS[num])
                 lbl.append(text)
         return lbl
