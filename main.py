@@ -1,4 +1,5 @@
 import functions
+import yolopy
 import cv2
 
 
@@ -9,7 +10,7 @@ args = {"threshold":0.3, "confidence":0.5}
 
 cam = cv2.VideoCapture(1)
 
-model = functions.yolo(labelsPath, weightsPath, configPath)
+model = yolopy.yolo(labelsPath, weightsPath, configPath)
 
 while True:
     ret, frame = cam.read()

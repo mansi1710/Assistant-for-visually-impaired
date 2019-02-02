@@ -1,6 +1,6 @@
 import cv2
 import time
-import numpy
+import numpy as np
 
 class yolo:
     def __init__(self,labelsPath, weightsPath, configPath):
