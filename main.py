@@ -105,6 +105,7 @@ model = yolopy.yolo(labelsPath, weightsPath, configPath)
 listening = False
 intent = None
 while True:
+
     print(listening)
     if not listening:
         resp = engine.recognize_speech_from_mic()
@@ -129,5 +130,12 @@ while True:
             print(text)
             listening = False
             engine.text_speech(text)
+        elif intent == 'Brightness':
+            engine.text_speech("It is {} outside".format((functions.getBrightness(cam))[0]))
         elif resp != 'None':
             engine.text_speech(text)
+
+    ret, img = cam.read()
+    cv2.imshow('frame', img)
+
+    cv2.waitKey(100)
