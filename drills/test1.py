@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import pyttsx3
 from google.oauth2 import service_account
 
 from nltk.stem.porter import PorterStemmer
@@ -49,12 +50,18 @@ class speech_to_text():
         lem = WordNetLemmatizer()
         text = [lem.lemmatize(word) for word in text if not word in
                                                             stop_words]
-
+        text = " ".join(text)
         return text
+    def text_speech(self, cleened_text):
+        engine = pyttsx3.init();
+        engine.say(cleened_text);
+        engine.runAndWait();
 
 response = speech_to_text()
 text = response.recognize_speech_from_mic()
+print(text)
 cleened_text = response.cleen(text)
 print(cleened_text)
+response.text_speech(cleened_text)
 
 
