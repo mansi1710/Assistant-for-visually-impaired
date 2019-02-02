@@ -94,7 +94,7 @@ class yolo:
 
         # show the output image
         cv2.imshow("Image", frame)
-        cv2.waitKey(10)
+        cv2.waitKey(1000)
 
     def detectAndPrint(self, frame, args):
         idxs, boxes, classIDs, confidences = self.detectYolo(frame, args)

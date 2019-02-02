@@ -16,12 +16,15 @@ class speech_to_text():
        self.recognizer = sr.Recognizer()
        self.microphone = sr.Microphone()
        self.engine = pyttsx3.init();
+       self.credentials = service_account.Credentials.from_service_account_file('api-key.json')
+
 
     def recognize_speech_from_mic(self):
         print("Start...")
         with self.microphone as source:
             self.recognizer.adjust_for_ambient_noise(source)
             audio = self.recognizer.listen(source)
+        print("Found mic")
         response = {
             "success": True,
             "error": None,

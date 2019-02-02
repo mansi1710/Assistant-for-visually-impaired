@@ -3,3 +3,6 @@ SpeechRecognition
 pyttsx3
 google-cloud-speech
 nltk
+dialogflow
+pyAudio
+wave
