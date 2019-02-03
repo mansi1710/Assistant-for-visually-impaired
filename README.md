@@ -12,3 +12,5 @@ Take input from user using Microphone.
 Google API for speech to text conversion.
 Feature Extraction (NLP)
 
+
+sudo apt-get install tesseract-ocr

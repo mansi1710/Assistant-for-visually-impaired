@@ -69,7 +69,7 @@ class yolo:
                     classIDs.append(classID)
 
         # apply non-maxima suppression to suppress weak, overlapping bounding
-        # boxes
+        # boxesg
         idxs = cv2.dnn.NMSBoxes(boxes, confidences, args["confidence"],
                                 args["threshold"])
 
