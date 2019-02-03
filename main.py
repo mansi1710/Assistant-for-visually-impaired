@@ -4,7 +4,7 @@ import speech
 import cv2
 import os
 import detect
-
+import datetime
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "dfkey.json"
 
 
@@ -13,14 +13,13 @@ weightsPath = "yolo/yolov3.weights"
 configPath = "yolo/yolov3.cfg"
 args = {"threshold":0.3, "confidence":0.5}
 project_id = "blindbot-4f356"
-cam = cv2.VideoCapture(0)
 engine = speech.speech_to_text()
 
 model = yolopy.yolo(labelsPath, weightsPath, configPath)
 listening = False
 intent = None
 while True:
-
+    cam = cv2.VideoCapture(1)
     if not listening:
         resp = engine.recognize_speech_from_mic()
         print(resp)
@@ -46,7 +45,14 @@ while True:
             engine.text_speech(text)
         elif intent == 'Brightness':
             engine.text_speech("It is {} outside".format((functions.getBrightness(cam))[0]))
-        elif intent =="FillForm":
+            elif intent == "FillForm":
+            detect_form(cam, engine)
+        elif intent == "Read":
+            print("read")
             detect.detect_text(cam, engine)
+        elif intent == "Time":
+            currentDT = datetime.datetime.now()
+            engine.text_speech("The time is {} hours and {} minutes".format{currentDT.hour, currentDT.minute})
         elif resp != 'None':
             engine.text_speech(text)
+    cam.release()

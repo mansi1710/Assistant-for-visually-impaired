@@ -6,6 +6,26 @@ import cv2
 
 def detect_text(cam, engine):
     credentials = service_account.Credentials.from_service_account_file('aj.json')
+    client = vision.ImageAnnotatorClient(credentials=credentials)
+    ret, content = cam.read()
+    cv2.imwrite('op.jpg', content)
+    with io.open('op.jpg', 'rb') as image_file:
+        content = image_file.read()
+    image = vision.types.Image(content=content)
+    response = client.text_detection(image=image)
+    texts = response.text_annotations
+    print(len(texts))
+    print('Text:')
+    textm = ""
+    for i, text in enumerate(texts):
+        engine.text_speech(text.description)
+        textm += text.description
+        textm = textm + " "
+    print(textm)
+
+def detect_form(cam, engine):
+
+    credentials = service_account.Credentials.from_service_account_file('aj.json')
     client = vision.ImageAnnotatorClient(credentials= credentials)
     #content = cam.read()
     path = 'bank.jpg'
@@ -28,6 +48,7 @@ def detect_text(cam, engine):
         textm += text.description
         textm = textm+" "
     print(textm)
+
 
 
 def detect_intent_texts(project_id, session_id, texts, language_code):
