@@ -6,4 +6,3 @@ nltk
 dialogflow
 pyAudio
 wave
-pytesseract
