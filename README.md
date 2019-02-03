@@ -10,5 +10,6 @@ Blind Assistant
 
 Take input from user using Microphone.
 Google API for speech to text conversion.
+
 Feature Extraction (NLP)
 
