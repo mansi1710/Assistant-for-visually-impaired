@@ -5,9 +5,8 @@ import speech
 import pyaudio
 import wave
 
-
 import os
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/abhinavj98/PycharmProjects/dotslash/DobaraMatPuchana/dfkey.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= r"C:\Users\Lenovo\PycharmProjects\DobaraMatPuchana\dfkey.json"
 
 def play_file(fname):
     # create an audio object
@@ -34,6 +33,34 @@ def play_file(fname):
     stream.close()
     p.terminate()
 
+
+def detect_text(cam, engine):
+    import io
+    from google.oauth2 import service_account
+    from google.cloud import vision
+    credentials = service_account.Credentials.from_service_account_file('aj.json')
+    client = vision.ImageAnnotatorClient(credentials= credentials)
+    #content = cam.read()
+    path = 'bank.jpg'
+    with io.open(path, 'rb') as image_file:
+        content = image_file.read()
+    image = vision.types.Image(content=content)
+    response = client.text_detection(image=image)
+    texts = response.text_annotations
+
+    print('Text:')
+    textm = ""
+    for i, text in enumerate(texts):
+        if(i==0):
+            engine.text_speech("The form is entitled as")
+        if(i==1):
+            engine.text_speech("The form asks about these details")
+        engine.text_speech(text.description)
+        if("Official" in text.description):
+            break
+        textm += text.description
+        textm = textm+" "
+    print(textm)
 
 def detect_intent_texts(project_id, session_id, texts, language_code):
     """Returns the result of detect intent with texts as inputs.
@@ -67,6 +94,24 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
 
 def describeScene(cam, model, engine):
     ret, frame = cam.read()
+    cv2.imwrite('op.jpg',frame)
+    import io
+    from google.oauth2 import service_account
+    from google.cloud import vision
+    credentials = service_account.Credentials.from_service_account_file('aj.json')
+    client = vision.ImageAnnotatorClient(credentials= credentials)
+    path = 'op.jpg'
+    with io.open(path, 'rb') as image_file:
+        content = image_file.read()
+    image = vision.types.Image(content=content)
+    response = client.label_detection(image=image)
+    labels = response.label_annotations
+    engine.text_speech("Description of the view")
+    for i, label in enumerate(labels):
+        if(i!=0):
+            break
+        else:
+            engine.text_speech(label.description)
     label = model.detectAndPrint(frame, args)
     #model.detectAndShow(frame, args)
     print(label)
@@ -99,7 +144,7 @@ weightsPath = "yolo/yolov3.weights"
 configPath = "yolo/yolov3.cfg"
 args = {"threshold":0.3, "confidence":0.5}
 project_id = "blindbot-4f356"
-cam = cv2.VideoCapture(1)
+cam = cv2.VideoCapture(0)
 engine = speech.speech_to_text()
 model = yolopy.yolo(labelsPath, weightsPath, configPath)
 listening = False
@@ -132,10 +177,12 @@ while True:
             engine.text_speech(text)
         elif intent == 'Brightness':
             engine.text_speech("It is {} outside".format((functions.getBrightness(cam))[0]))
+        elif intent =="FillForm":
+            detect_text(cam, engine)
         elif resp != 'None':
             engine.text_speech(text)
 
-    ret, img = cam.read()
-    cv2.imshow('frame', img)
-
-    cv2.waitKey(100)
+    # ret, img = cam.read()
+    # cv2.imshow('frame', img)
+    #
+    # cv2.waitKey(100)
