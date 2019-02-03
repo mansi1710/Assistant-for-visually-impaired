@@ -100,27 +100,60 @@ def describeScene(cam, model, engine):
     from google.cloud import vision
     credentials = service_account.Credentials.from_service_account_file('aj.json')
     client = vision.ImageAnnotatorClient(credentials= credentials)
-    path = 'op.jpg'
+    #path = 'op.jpg'
+    path = 'road.jpg'
     with io.open(path, 'rb') as image_file:
         content = image_file.read()
     image = vision.types.Image(content=content)
     response = client.label_detection(image=image)
     labels = response.label_annotations
     engine.text_speech("Description of the view")
+    road = 0
+    car = 0
+    motor_vehicle = 0
+    bycycle = 0
+    classroom = 0
+    truck = 0
+    traffic = 0
     for i, label in enumerate(labels):
-        if(i!=0):
-            break
+        engine.text_speech(label.description)
+        if(label.description == "Highway" or label.description == "Lane" or label.description =="Road"):
+            road += 1
+        if(label.description == "Car"):
+            car += 1
+        if(label.description == "Motor vehicle"):
+            motor_vehicle += 1
+        if(label.description == "Bycycle"):
+            bycycle += 1
+        if(label.description == "Truck"):
+            truck += 1
+        if(label.description == "Face"):
+            face += 1
+        if(label.description == "Classroom"):
+            classroom += 1
+        if(labels.description == "Traffic"):
+            traffic += 1
+    if(road >= 1):
+        if(car>=1 or motor_vehicle>= 1 or bycycle>= 1 or truck >= 1 or traffic >= 1):
+            engine.text_speech("It seems you are walking on a road with vehicles. Beware! Do you want me to find people for help?")
         else:
-            engine.text_speech(label.description)
-    label = model.detectAndPrint(frame, args)
-    #model.detectAndShow(frame, args)
-    print(label)
+            engine.text_speech("It seems the road you are walking on is quite safe. Yet beware.")
+    if(classroom >= 1):
+        engine.text_speech("You seem to be in a classroom!")
+    else if
+    objects = client.object_localization(
+        image=image).localized_object_annotations
+    print('Number of objects found: {}'.format(len(objects)))
+    #engine.text_speech("I will tell you the objects near you")
+    for object_ in objects:
+        print('{} '.format(object_.name))
+        #engine.text_speech(object_.name)
     lbldict = {}
-    for i in label:
-        if i in lbldict:
-            lbldict[i] += 1
+    for i in objects:
+        if i.name in lbldict:
+            lbldict[i.name] += 1
         else:
-            lbldict[i] = 1
+            lbldict[i.name] = 1
     once = True
     length = len(lbldict)
     r = 0
@@ -146,6 +179,7 @@ args = {"threshold":0.3, "confidence":0.5}
 project_id = "blindbot-4f356"
 cam = cv2.VideoCapture(0)
 engine = speech.speech_to_text()
+
 model = yolopy.yolo(labelsPath, weightsPath, configPath)
 listening = False
 intent = None
