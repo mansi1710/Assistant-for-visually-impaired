@@ -1,3 +1,7 @@
 *.weights
 *.1
 personal.py
+*.yolopy.pyc
+*.speech.pyc
+*.functions.pyc
+
