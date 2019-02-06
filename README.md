@@ -2,7 +2,7 @@
 
 ## **Jyoti** : Assistant for blind
 
-A *voice assistant* specifically aiming towards making helping the visually 
+A *voice assistant* specifically aiming towards aiding the visually imapired.
 
 This system is used to help the visually impaired to have access to the most important features enhancing their living conditions making use of different custom layouts and using speech to text.
 
@@ -55,7 +55,7 @@ Tech- stacks used:
     
     4. Google Cloud Vision API 
     
-    5. Dialogueflow
+    5. Dialogflow
             
  Install Dependencies
  
